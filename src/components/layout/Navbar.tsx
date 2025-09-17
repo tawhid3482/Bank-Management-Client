@@ -38,6 +38,8 @@ export default function Navbar() {
     navigate("/");
   };
 
+  const Role = data?.data?.role === "USER";
+
   return (
     <header className="border-b px-4 md:px-6 shadow">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -130,49 +132,35 @@ export default function Navbar() {
               {dropdownOpen && (
                 <div className="absolute right-0 mt-36 w-44 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden z-50 animate-slide-down">
                   <div className="flex flex-col py-2">
-                    <Button
-                      variant="ghost"
-                      className="px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2"
-                      onClick={() => {
-                        navigate("/dashboard");
-                        setDropdownOpen(false);
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-gray-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                    {Role === true ? (
+                      <Button
+                        variant="ghost"
+                        className="px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2"
+                        onClick={() => {
+                          navigate("/account");
+                          setDropdownOpen(false);
+                        }}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 3h18v18H3V3z"
-                        />
-                      </svg>
-                      Dashboard
-                    </Button>
+                        Account
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        className="px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2"
+                        onClick={() => {
+                          navigate("/admin/dashboard");
+                          setDropdownOpen(false);
+                        }}
+                      >
+                        Dashboard
+                      </Button>
+                    )}
+
                     <Button
                       variant="ghost"
                       className="px-4 py-2 text-left hover:bg-red-100 flex items-center gap-2 text-red-600"
                       onClick={handleLogout}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 16l4-4m0 0l-4-4m4 4H7"
-                        />
-                      </svg>
                       Logout
                     </Button>
                   </div>

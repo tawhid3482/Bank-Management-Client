@@ -1,6 +1,7 @@
 import { CiLocationOn } from "react-icons/ci";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import logo from '../../assets/image/logo.png'
 
 const Footer = () => {
   return (
@@ -12,7 +13,7 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <div className="flex justify-center md:justify-start">
               {/* Logo */}
-              <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
+              <img src={logo} alt="Logo" className=" w-auto bg-white p-2 rounded-md" />
             </div>
             <p className="mt-4 text-sm leading-relaxed">
               Empowering financial decisions through transparent credit scoring{" "}

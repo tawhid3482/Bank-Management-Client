@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -8,7 +9,11 @@ import { Label } from "@/components/ui/label";
 import { CheckCircle2, DollarSign } from "lucide-react";
 import ProfileStats from "./ProfileStats";
 import ProgressBar from "./ProgressBar";
-import { useUserPersonalInfoQuery } from "@/redux/features/info/info.api";
+import {
+  useRequestLoanMutation,
+  useUserPersonalInfoQuery,
+} from "@/redux/features/info/info.api";
+import { toast } from "sonner";
 
 const timeAgo = (dateString: string) => {
   if (!dateString) return "";
@@ -24,12 +29,15 @@ const timeAgo = (dateString: string) => {
 };
 
 export default function CreditDashboard() {
-  const { data } = useUserPersonalInfoQuery("");
+  const { data, } = useUserPersonalInfoQuery("", {
+    refetchOnMountOrArgChange: true,
+  });
   const user = data?.data?.info;
   const info = user?.annualInfo;
   const creditScore = Number(user?.creditScore) || 0;
   const firstName = user?.firstName || "";
   const lastName = user?.lastName || "";
+  const requestLoanAmount = user?.requestLoanAmount;
   const createdAt = user?.createdAt
     ? new Date(user.createdAt).toLocaleDateString()
     : "N/A";
@@ -42,6 +50,19 @@ export default function CreditDashboard() {
   else suggestedLimit = 10000;
 
   const [agreed, setAgreed] = useState(false);
+  const [loanAmount, setLoanAmount] = useState<number | "">(""); // default empty
+  const [requestLoan] = useRequestLoanMutation();
+
+  const handleSubmit = async (data: number) => {
+    try {
+      const res = await requestLoan({ requestLoanAmount: data }).unwrap();
+      if (res.success === true) {
+        toast.success("Loan Request Submitted");
+      }
+    } catch (err) {
+      toast.error((err as any).data.message);
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
@@ -177,40 +198,56 @@ export default function CreditDashboard() {
             </div>
           </div>
 
-          {/* Consent */}
-          <div className="flex items-start space-x-2">
-            <Checkbox
-              id="consent"
-              onCheckedChange={(val) => setAgreed(val === true)}
-            />
-            <Label
-              htmlFor="consent"
-              className="text-xs text-gray-600 leading-tight"
-            >
-              I agree to share my data with partner financial institutions for
-              my credit application
-            </Label>
-          </div>
+          {requestLoanAmount ? (
+            <p className="text-black font-medium">
+              You already applied for loan
+            </p>
+          ) : (
+            <div className="space-y-3">
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id="consent"
+                  onCheckedChange={(val) => setAgreed(val === true)}
+                />
+                <Label
+                  htmlFor="consent"
+                  className="text-xs text-gray-600 leading-tight cursor-pointer"
+                >
+                  I agree to share my data with partner financial institutions
+                  for my credit application
+                </Label>
+              </div>
 
-          {/* Loan Input */}
-          <div>
-            <Label htmlFor="loan" className="text-sm text-gray-700">
-              Enter Loan Amount
-            </Label>
-            <Input
-              id="loan"
-              placeholder="Enter your amount"
-              type="number"
-              className="mt-1"
-            />
-          </div>
+              {/* Loan Input */}
+              <div>
+                <Label htmlFor="loan" className="text-sm text-gray-700">
+                  Enter Loan Amount
+                </Label>
+                <Input
+                  id="loan"
+                  placeholder="Enter your amount"
+                  type="number"
+                  className="mt-1"
+                  value={loanAmount}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setLoanAmount(val === "" ? "" : Number(val)); // allow empty
+                  }}
+                />
+              </div>
 
-          <Button
-            disabled={!agreed}
-            className="w-full bg-[#4B203A] hover:bg-[#3b1a30] transition text-white"
-          >
-            Submit Application
-          </Button>
+              <Button
+                disabled={!agreed || loanAmount === ""} // disable if not agreed or empty
+                className="w-full bg-[#4B203A] hover:bg-[#3b1a30] transition text-white cursor-pointer"
+                onClick={() => {
+                  if (loanAmount === "") return; // prevent empty submit
+                  handleSubmit(Number(loanAmount)); // cast to number here
+                }}
+              >
+                Submit Application
+              </Button>
+            </div>
+          )}
 
           {/* Application Status */}
           <div className="border-t pt-4 space-y-2">
