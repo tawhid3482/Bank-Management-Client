@@ -16,6 +16,14 @@ const infoApi = baseApi.injectEndpoints({
       }),
       providesTags: ["INFO"],
     }),
+    getPersonalInfo: builder.query({
+      query: (id: string) => ({
+        url: `/info/${id}`, // এখানে id যুক্ত করলাম
+        method: "GET",
+      }),
+      providesTags: ["INFO"],
+    }),
+
     adminStats: builder.query({
       query: () => ({
         url: "/info/stats",
@@ -36,11 +44,27 @@ const infoApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: userInfo,
       }),
-      invalidatesTags:["INFO"]
+      invalidatesTags: ["INFO"],
     }),
     requestLoan: builder.mutation({
       query: (userInfo) => ({
         url: "/info/request-loan",
+        method: "PATCH",
+        data: userInfo,
+      }),
+      invalidatesTags: ["INFO"],
+    }),
+    approvedLoan: builder.mutation({
+      query: ({userInfo,id}) => ({
+        url: `/info/approved/${id}`,
+        method: "PATCH",
+        data: userInfo,
+      }),
+      invalidatesTags: ["INFO"],
+    }),
+    rejectedLoan: builder.mutation({
+      query: ({userInfo,id}) => ({
+        url: `/info/rejected/${id}`,
         method: "PATCH",
         data: userInfo,
       }),
@@ -55,5 +79,8 @@ export const {
   useRequestLoanMutation,
   useUpdateProfileMutation,
   useGetAllInfoQuery,
-  useAdminStatsQuery
+  useAdminStatsQuery,
+  useGetPersonalInfoQuery,
+  useApprovedLoanMutation,
+  useRejectedLoanMutation
 } = infoApi;

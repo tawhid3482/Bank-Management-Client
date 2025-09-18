@@ -11,13 +11,13 @@ import Security from "./Security";
 import LoanStats from "./LoanStats";
 
 export function Account() {
-  const [activeTab, setActiveTab] = useState("personal"); // state for sidebar navigation
+  const [activeTab, setActiveTab] = useState("personal");
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
-  const {data}=useUserPersonalInfoQuery('')
-  const info = data?.data
-   const firstName = info?.info?.firstName || "";
+  const { data } = useUserPersonalInfoQuery("");
+  const info = data?.data;
+  const firstName = info?.info?.firstName || "";
   const lastName = info?.info?.lastName || "";
 
   const handleLogout = async () => {
@@ -27,30 +27,34 @@ export function Account() {
   };
 
   return (
-    <div className="bg-gray-50 p-8 font-sans text-gray-800">
+    <div className="bg-gray-50 p-4 md:p-8 font-sans text-gray-800">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-xl font-bold text-gray-800">Account Settings</h1>
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-lg md:text-xl font-bold text-gray-800">
+          Account Settings
+        </h1>
         <p className="text-sm text-gray-500">
           Manage your account preferences and information
         </p>
       </div>
 
-      <div className="flex items-start gap-5">
+      {/* Responsive layout */}
+      <div className="flex flex-col md:flex-row items-start gap-5">
         {/* Sidebar */}
-        <div className="w-1/4 max-w-xs">
+        <div className="w-full md:w-1/4 md:max-w-xs">
           <Card className="h-full rounded-lg shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center space-x-4">
                 <Avatar className="h-12 w-12 border-2">
-                  <AvatarImage src="https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small_2x/Basic_Ui__28186_29.jpg" alt="User" />
+                  <AvatarImage
+                    src="https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small_2x/Basic_Ui__28186_29.jpg"
+                    alt="User"
+                  />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="font-semibold">{firstName + " " + lastName}</p>
-                  <p className="text-sm text-gray-500">
-                    {data?.data?.email}
-                  </p>
+                  <p className="text-sm text-gray-500">{data?.data?.email}</p>
                 </div>
               </div>
             </CardContent>
@@ -104,16 +108,12 @@ export function Account() {
         </div>
 
         {/* Main Content */}
-        <div className="w-3/4">
-          <Card className="rounded-lg ">
-            <CardContent className="p-6">
+        <div className="w-full md:w-3/4">
+          <Card className="rounded-lg">
+            <CardContent className="p-4 md:p-6">
               {activeTab === "personal" && <PersonalInfo />}
-              {activeTab === "security" && (
-               <Security />
-              )}
-              {activeTab === "loan" && (
-               <LoanStats />
-              )}
+              {activeTab === "security" && <Security />}
+              {activeTab === "loan" && <LoanStats />}
             </CardContent>
           </Card>
         </div>

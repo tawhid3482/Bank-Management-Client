@@ -31,6 +31,7 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
+
   const handleLogout = async () => {
     await logout("").unwrap();
     dispatch(authApi.util.resetApiState());
@@ -132,6 +133,20 @@ export default function Navbar() {
               {dropdownOpen && (
                 <div className="absolute right-0 mt-36 w-44 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden z-50 animate-slide-down">
                   <div className="flex flex-col py-2">
+                    {Role === true ? (
+                      <Button
+                        variant="ghost"
+                        className="px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2"
+                        onClick={() => {
+                          navigate("/profile");
+                          setDropdownOpen(false);
+                        }}
+                      >
+                        Profile
+                      </Button>
+                    ) : (
+                      <span></span>
+                    )}
                     {Role === true ? (
                       <Button
                         variant="ghost"

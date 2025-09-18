@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Settings, LogOut, Menu, X } from "lucide-react";
 import logo from "../../assets/image/logo.png";
-import { Outlet, useNavigate } from "react-router";
+import { NavLink, Outlet, useNavigate } from "react-router";
 import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api";
 import { useAppDispatch } from "@/redux/hook";
 
@@ -42,20 +42,33 @@ const DashboardLayout = () => {
 
           {/* Navigation */}
           <nav className="space-y-2 flex-1">
-            <Button
-              variant="ghost"
-              className="flex w-full items-center justify-start space-x-3 bg-white bg-opacity-10 px-4 py-6 text-lg font-semibold text-white"
+            <NavLink
+              to={"/admin/dashboard"}
+              className={({ isActive }) =>
+                `flex w-full items-center justify-start space-x-3 px-4 py-6 text-lg font-medium ${
+                  isActive
+                    ? "text-white bg-opacity-20"
+                    : "text-gray-400"
+                } rounded-lg`
+              }
             >
               <LayoutDashboard size={20} />
               <span>Dashboard</span>
-            </Button>
-            <Button
-              variant="ghost"
-              className="flex w-full items-center justify-start space-x-3 px-4 py-6 text-lg font-medium text-gray-300"
+            </NavLink>
+
+            <NavLink
+              to={"/admin/settings"}
+              className={({ isActive }) =>
+                `flex w-full items-center justify-start space-x-3 px-4 py-6 text-lg font-medium ${
+                  isActive
+                    ? "text-white  bg-opacity-20"
+                    : "text-gray-400"
+                } rounded-lg`
+              }
             >
               <Settings size={20} />
               <span>Settings</span>
-            </Button>
+            </NavLink>
           </nav>
 
           {/* Log Out - always bottom */}
@@ -83,14 +96,14 @@ const DashboardLayout = () => {
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         {/* Mobile Topbar */}
-        <header className="flex items-center justify-between bg-white px-4 py-3 shadow-md lg:hidden">
+        <header className="flex items-center text-white justify-between bg-[#4B1E2F] px-4 py-3 shadow-md lg:hidden">
           <Button
             variant="ghost"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
             {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
           </Button>
-          <h1 className="text-lg font-semibold text-gray-700">Dashboard</h1>
+          <h1 className="text-lg  font-semibold text-white">Dashboard</h1>
         </header>
 
         {/* Page Content */}
