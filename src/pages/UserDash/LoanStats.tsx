@@ -13,7 +13,6 @@ const LoanStats = () => {
   const loan = user?.info?.isApproved;
   const rejected = user?.info?.rejectedNotes;
 
-  console.log(loan, rejected, user);
 
   useEffect(() => {
     if (!status) {

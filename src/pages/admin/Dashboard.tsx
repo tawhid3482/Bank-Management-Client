@@ -266,7 +266,6 @@ const Dashboard = () => {
           )}
 
           {/* Responsive Table */}
-          {/* Responsive Table */}
           <div className="mt-6">
             {filteredClients?.length > 0 ? (
               <div className="hidden sm:block overflow-x-auto">
@@ -427,7 +426,7 @@ const Dashboard = () => {
           <div className="relative w-full max-w-6xl mx-auto  max-h-screen overflow-y-auto p-6">
             {/* Close Button */}
             <button
-              className="absolute top-2 right-3 text-white hover:text-gray-700"
+              className="absolute top-12 right-12 md:top-2 md:right-3 md:text-white hover:text-gray-700"
               onClick={closeModal}
             >
               <X size={24} />

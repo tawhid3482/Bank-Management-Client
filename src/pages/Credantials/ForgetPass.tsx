@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -48,13 +49,12 @@ export function ForgetPass() {
 
     try {
       const result = await ForgetPass(emailInfo).unwrap();
-      console.log(result);
       toast.success("Check Your Email");
       if(result.success === true){
         navigate('/verify', {state:data.email})
       }
     } catch (err) {
-      console.log(err);
+       toast.error((err as any).message);;
     }
   };
 

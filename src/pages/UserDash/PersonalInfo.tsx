@@ -59,7 +59,6 @@ const PersonalInfo = () => {
   };
   const handleSubmit = async () => {
     try {
-      console.log(formData);
 
       const res = await updateProfile(formData).unwrap();
       if (res.success === true) {

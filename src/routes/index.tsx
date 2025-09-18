@@ -9,10 +9,10 @@ import SignUp from "@/pages/Credantials/SignUp";
 import { Verify } from "@/pages/Credantials/Verify";
 import { createBrowserRouter } from "react-router";
 import Home from "@/components/layout/Home/Home";
-import { Profile } from "@/pages/Profile/Profile";
 import UserProfile from "@/pages/Profile/UserProfile";
 import { Account } from "@/pages/UserDash/Account";
 import Dashboard from "@/pages/admin/Dashboard";
+import Profile from "@/pages/Profile/Profile";
 
 export const router = createBrowserRouter([
   {

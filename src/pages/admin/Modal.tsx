@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
 
 import {
   Calendar,
@@ -96,7 +95,7 @@ const Modal = ({ infoId }: InfoProps) => {
         id: infoId,
       }).unwrap();
       if (res.success === true) {
-        toast.success("Loan rejected ");
+        toast.success("Loan rejected");
       }
       resetReject();
       setDecision(null);
@@ -106,35 +105,37 @@ const Modal = ({ infoId }: InfoProps) => {
   };
 
   return (
-    <div className="p-6">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="p-4 md:p-6">
+      <div className="bg-white shadow-md rounded-lg p-4 md:p-6">
         {/* Header */}
-        <div className="mb-6 flex justify-between items-center border-b pb-4">
-          <h1 className="text-2xl font-bold text-gray-800">Client Details</h1>
-          <button className="flex items-center gap-1 text-md cursor-pointer ">
+        <div className="mb-4 md:mb-6 flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-2 md:mb-0">
+            Client Details
+          </h1>
+          <button className="flex items-center gap-1 text-md cursor-pointer">
             <Download />
             <span> Export</span>
           </button>
         </div>
 
         {/* Main Content */}
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {/* Left Column */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-2 space-y-4 md:space-y-6">
             {/* Credit Passport */}
             <div className="bg-gray-50 p-4 rounded-md shadow-sm">
               <h2 className="text-lg font-semibold mb-4">Credit Passport</h2>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
                 <img
                   src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
                   alt="User"
                   className="w-16 h-16 rounded-full"
                 />
-                <div>
+                <div className="flex-1">
                   <p className="font-bold text-gray-700">
                     {info?.firstName} {info?.lastName}
                   </p>
-                  <div className="flex items-center gap-2 my-2">
+                  <div className="flex items-center gap-2 my-1">
                     <Mail />
                     <p className="text-sm text-gray-600">{info?.email}</p>
                   </div>
@@ -143,7 +144,7 @@ const Modal = ({ infoId }: InfoProps) => {
                     <p className="text-sm text-gray-600">{info?.phone}</p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-4 md:ml-28 text-sm text-gray-600">
+                <div className="flex flex-col gap-2 text-sm text-gray-600">
                   <div className="flex items-center gap-1">
                     <Calendar />
                     <p>
@@ -169,7 +170,7 @@ const Modal = ({ infoId }: InfoProps) => {
               <h2 className="text-lg font-semibold mb-4">
                 Financial Information
               </h2>
-              <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
                 <div className="flex items-center gap-1">
                   <DollarSign size={16}></DollarSign>
                   <p>
@@ -205,18 +206,15 @@ const Modal = ({ infoId }: InfoProps) => {
               </div>
             </div>
 
-            {/* Decision */}
-            {/* Approve / Reject Section */}
+            {/* Decision Section */}
             <div className="bg-gray-50 p-4 rounded-md shadow-sm">
               <h2 className="text-lg font-semibold mb-4">Decision</h2>
-
-              {/* Approve / Reject Buttons */}
-              <div className="flex space-x-4 mb-4">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4">
                 <button
                   className={`px-4 py-2 rounded-md text-green-600 ${
                     decision === "approve"
                       ? "bg-[#039B06] text-white"
-                      : "bg-[#039B061A]  hover:bg-[#039B06]"
+                      : "bg-[#039B061A] hover:bg-[#039B06]"
                   }`}
                   onClick={() => setDecision("approve")}
                 >
@@ -226,7 +224,7 @@ const Modal = ({ infoId }: InfoProps) => {
                   className={`px-4 py-2 rounded-md text-red-600 ${
                     decision === "reject"
                       ? "bg-[#D00202] text-white"
-                      : "bg-[#D002021A]  hover:bg-red-600"
+                      : "bg-[#D002021A] hover:bg-red-600"
                   }`}
                   onClick={() => setDecision("reject")}
                 >
@@ -236,7 +234,7 @@ const Modal = ({ infoId }: InfoProps) => {
 
               {/* Approve Section */}
               {decision === "approve" && (
-                <div className="p-6 bg-[#039B061A] border border-gray-300 rounded-lg shadow-sm w-full mx-auto font-sans grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                <div className="p-4 md:p-6 bg-[#039B061A] border border-gray-300 rounded-lg shadow-sm w-full mx-auto font-sans grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Loan Amount ($)
@@ -287,6 +285,7 @@ const Modal = ({ infoId }: InfoProps) => {
                   ></textarea>
                 </div>
               )}
+
               {decision !== "reject" && (
                 <div className="mt-4">
                   <label className="block text-sm font-medium text-gray-700">
@@ -301,7 +300,7 @@ const Modal = ({ infoId }: InfoProps) => {
                 </div>
               )}
 
-              {/* Submit button under Notes */}
+              {/* Submit button */}
               <div className="mt-4">
                 <button
                   type="button"
@@ -325,7 +324,7 @@ const Modal = ({ infoId }: InfoProps) => {
           </div>
 
           {/* Right Column */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6 mt-4 md:mt-0">
             <RightColumn info={info}></RightColumn>
           </div>
         </div>

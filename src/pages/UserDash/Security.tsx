@@ -63,7 +63,6 @@ const Security = () => {
       newPassword: data.password,
     };
     try {
-      console.log(info);
       const res = await changePassword(info).unwrap();
       if (res.success === true) {
         toast.success("Password change successfully! Please Login again");

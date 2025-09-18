@@ -1,0 +1,402 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { useState } from "react";
+
+export default function Profile() {
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
+    gender: "",
+    address: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    income: "",
+    landOwned: "",
+    electricityBill: "",
+    mobileBill: "",
+    existingLoan: "",
+    loanAmount: "",
+    agreeDataShare: false,
+  });
+
+  const [errors, setErrors] = useState<string[]>([]);
+
+  const validateStep = () => {
+    const currentErrors: string[] = [];
+
+    if (step === 1) {
+      if (!formData.firstName.trim()) currentErrors.push("First Name is required");
+      if (!formData.lastName.trim()) currentErrors.push("Last Name is required");
+      if (!formData.dateOfBirth.trim()) currentErrors.push("Date of Birth is required");
+      if (!formData.gender.trim()) currentErrors.push("Gender is required");
+      console.log("Step 1 validation errors:", currentErrors);
+    }
+
+    if (step === 2) {
+      if (!formData.address.trim()) currentErrors.push("Address is required");
+      if (!formData.city.trim()) currentErrors.push("City is required");
+      if (!formData.state.trim()) currentErrors.push("State is required");
+      if (!formData.zipCode.trim()) currentErrors.push("ZIP code is required");
+      console.log("Step 2 validation errors:", currentErrors);
+    }
+
+    if (step === 3) {
+      if (!formData.income.trim()) currentErrors.push("Annual Income is required");
+      if (!formData.landOwned.trim()) currentErrors.push("Value of Land ownership is required");
+      if (!formData.electricityBill.trim()) currentErrors.push("Electricity bill is required");
+      if (!formData.mobileBill.trim()) currentErrors.push("Mobile money Balance is required");
+      if (!formData.existingLoan.trim()) currentErrors.push("Please specify if you have existing loans");
+      if (formData.existingLoan === "yes" && !formData.loanAmount.trim()) {
+        currentErrors.push("Loan Amount is required");
+      }
+      if (!formData.agreeDataShare) currentErrors.push("You must agree to share your data");
+      console.log("Step 3 validation errors:", currentErrors);
+    }
+
+    setErrors(currentErrors);
+    return currentErrors.length === 0;
+  };
+
+  const next = () => {
+    if (validateStep()) {
+      setStep((p) => Math.min(p + 1, 3));
+      setErrors([]);
+    } else {
+      alert("Please fix errors before submitting.");
+    }
+  };
+
+  const back = () => {
+    setErrors([]);
+    setStep((p) => Math.max(p - 1, 1));
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type, checked } = e.target;
+    console.log(`handleChange - field: ${name}, value: ${type === "checkbox" ? checked : value}`);
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+
+    // Clear error for this field on change by filtering out errors that mention the field name
+    setErrors((prevErrors) =>
+      prevErrors.filter((err) => !err.toLowerCase().includes(name.toLowerCase()))
+    );
+  };
+
+  // Helper to check if error exists for a field
+  const hasError = (fieldName: string) =>
+    errors.some((err) => err.toLowerCase().includes(fieldName.toLowerCase()));
+
+  return (
+    <div className="max-w-6xl mx-auto mt-10 px-6 py-10 bg-white shadow-md rounded-lg">
+      <h2 className="text-lg font-semibold text-[#4B203A] mb-2">Complete Your Profile</h2>
+      <p className="text-sm text-gray-600 mb-6">
+        Please provide accurate information so we can generate your accurate credit profile.
+      </p>
+
+      {/* Stepper */}
+      <div className="relative flex justify-between items-center mb-10">
+        {["Personal", "Contact", "Financial"].map((label, i) => {
+          const index = i + 1;
+          const isComplete = step > index;
+          const isCurrent = step === index;
+          return (
+            <div key={label} className="flex flex-col items-center relative z-10">
+              <div
+                className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-medium transition-colors ${
+                  isCurrent || isComplete
+                    ? "bg-[#4B203A] text-white border-[#4B203A]"
+                    : "bg-gray-200 text-gray-600 border-gray-300"
+                }`}
+              >
+                {isComplete ? "✓" : index}
+              </div>
+              <span className="text-xs mt-2 text-gray-700">{label}</span>
+            </div>
+          );
+        })}
+        <div className="absolute top-4 left-0 w-full h-[2px] bg-gray-300 -z-0">
+          <div
+            className="h-[2px] bg-[#4B203A] transition-all duration-500"
+            style={{ width: step === 1 ? "0%" : step === 2 ? "50%" : "100%" }}
+          />
+        </div>
+      </div>
+
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        if (validateStep()) {
+          console.log("Form submitted:", formData);
+          alert("Form submitted! Check console.");
+        } else {
+          alert("Please fix errors before submitting.");
+        }
+      }}>
+        {/* Step 1 */}
+        {step === 1 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-1">First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className={`w-full border rounded-md h-10 px-3 text-sm ${
+                  hasError("firstName") ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {hasError("firstName") && (
+                <p className="text-red-500 text-xs mt-1">First Name is required</p>
+              )}
+            </div>
+            <div>
+              <label className="block mb-1">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className={`w-full border rounded-md h-10 px-3 text-sm ${
+                  hasError("lastName") ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {hasError("lastName") && (
+                <p className="text-red-500 text-xs mt-1">Last Name is required</p>
+              )}
+            </div>
+            <div>
+              <label className="block mb-1">Date of Birth</label>
+              <input
+                type="date"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+                className={`w-full border rounded-md h-10 px-3 text-sm ${
+                  hasError("dateOfBirth") ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {hasError("dateOfBirth") && (
+                <p className="text-red-500 text-xs mt-1">Date of Birth is required</p>
+              )}
+            </div>
+            <div>
+              <label className="block mb-1">Gender</label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className={`w-full border rounded-md h-10 px-3 text-sm ${
+                  hasError("gender") ? "border-red-500" : "border-gray-300"
+                }`}
+              >
+                <option value="">Select</option>
+                <option value="male">male</option>
+                <option value="female">female</option>
+                <option value="other">other</option>
+              </select>
+              {hasError("gender") && (
+                <p className="text-red-500 text-xs mt-1">Gender is required</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Step 2 */}
+        {step === 2 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {["address", "city", "state", "zipCode"].map((field) => (
+              <div key={field}>
+                <label className="block mb-1">{field === "zipCode" ? "ZIP code" : field}</label>
+                <input
+                  type="text"
+                  name={field}
+                  value={(formData as any)[field]}
+                  onChange={handleChange}
+                  className={`w-full border rounded-md h-10 px-3 text-sm ${
+                    hasError(field) ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {hasError(field) && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {field === "zipCode" ? "ZIP code is required" : `${field} is required`}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Step 3 */}
+        {step === 3 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-1">Annual Income (FCFA)</label>
+              <input
+                type="number"
+                name="income"
+                value={formData.income}
+                onChange={handleChange}
+                className={`w-full border rounded-md h-10 px-3 text-sm ${
+                  hasError("income") ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {hasError("income") && (
+                <p className="text-red-500 text-xs mt-1">Annual Income is required</p>
+              )}
+            </div>
+            <div>
+              <label className="block mb-1">Value of Land ownership (FCFA)</label>
+              <input
+                type="number"
+                name="landOwned"
+                value={formData.landOwned}
+                onChange={handleChange}
+                className={`w-full border rounded-md h-10 px-3 text-sm ${
+                  hasError("landOwned") ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {hasError("landOwned") && (
+                <p className="text-red-500 text-xs mt-1">Value of Land ownership is required</p>
+              )}
+            </div>
+            <div>
+              <label className="block mb-1">Electricity bill (FCFA)</label>
+              <input
+                type="number"
+                name="electricityBill"
+                value={formData.electricityBill}
+                onChange={handleChange}
+                className={`w-full border rounded-md h-10 px-3 text-sm ${
+                  hasError("electricityBill") ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {hasError("electricityBill") && (
+                <p className="text-red-500 text-xs mt-1">Electricity bill is required</p>
+              )}
+            </div>
+            <div>
+              <label className="block mb-1">Mobile money Balance (FCFA)</label>
+              <input
+                type="number"
+                name="mobileBill"
+                value={formData.mobileBill}
+                onChange={handleChange}
+                className={`w-full border rounded-md h-10 px-3 text-sm ${
+                  hasError("mobileBill") ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {hasError("mobileBill") && (
+                <p className="text-red-500 text-xs mt-1">Mobile money Balance is required</p>
+              )}
+            </div>
+
+            <div className="md:col-span-2 mt-4">
+              <label className="block mb-1">Existing Loans</label>
+              <div className="flex gap-6 mt-2">
+                <label className="cursor-pointer">
+                  <input
+                    type="radio"
+                    name="existingLoan"
+                    value="yes"
+                    checked={formData.existingLoan === "yes"}
+                    onChange={handleChange}
+                    className="mr-1"
+                  />
+                  Yes
+                </label>
+                <label className="cursor-pointer">
+                  <input
+                    type="radio"
+                    name="existingLoan"
+                    value="no"
+                    checked={formData.existingLoan === "no"}
+                    onChange={handleChange}
+                    className="mr-1"
+                  />
+                  No
+                </label>
+              </div>
+              {hasError("existingLoan") && (
+                <p className="text-red-500 text-xs mt-1">Please specify if you have existing loans</p>
+              )}
+            </div>
+
+            {formData.existingLoan === "yes" && (
+              <div>
+                <label className="block mb-1">Loan Amount (FCFA)</label>
+                <input
+                  type="number"
+                  name="loanAmount"
+                  value={formData.loanAmount}
+                  onChange={handleChange}
+                  className={`w-full border rounded-md h-10 px-3 text-sm ${
+                    hasError("loanAmount") ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {hasError("loanAmount") && (
+                  <p className="text-red-500 text-xs mt-1">Loan Amount is required</p>
+                )}
+              </div>
+            )}
+
+            <div className="md:col-span-2 mt-4 flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="agreeDataShare"
+                name="agreeDataShare"
+                checked={formData.agreeDataShare}
+                onChange={handleChange}
+                className="w-4 h-4"
+              />
+              <label htmlFor="agreeDataShare" className="text-sm">
+                I agree to share my data with [App Name]
+              </label>
+            </div>
+            {hasError("agreeDataShare") && (
+              <p className="text-red-500 text-xs mt-1 md:col-span-2">
+                You must agree to share your data
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Buttons */}
+        <div className="flex justify-between mt-10">
+          {step > 1 && (
+            <button
+              type="button"
+              onClick={back}
+              className="bg-gray-300 px-4 py-2 rounded-md text-gray-700 hover:bg-gray-400"
+            >
+              Back
+            </button>
+          )}
+          {step < 3 && (
+            <button
+              type="button"
+              onClick={next}
+              className="bg-[#4B203A] text-white px-4 py-2 rounded-md hover:bg-[#3b172f]"
+            >
+              Next
+            </button>
+          )}
+          {step === 3 && (
+            <button
+              type="submit"
+              className="bg-[#4B203A] text-white px-4 py-2 rounded-md hover:bg-[#3b172f]"
+            >
+              Submit
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
+  );
+}

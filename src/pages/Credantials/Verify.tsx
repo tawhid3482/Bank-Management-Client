@@ -46,15 +46,12 @@ export function Verify() {
 
   const onSubmit = async () => {
     const finalOtp = otp.join("");
-    console.log("OTP:", finalOtp);
     const otpInfo = {
       email: email,
       otp: finalOtp,
     };
-    console.log(otpInfo);
     if (finalOtp.length === 6) {
       const result = await otpVerify(otpInfo).unwrap();
-      console.log(result);
       if (result.success === true) {
         toast.success("OTP Verified Successfully");
       }

@@ -59,7 +59,6 @@ const SignUp = () => {
   });
 
   const onSubmit =async (data: RegisterForm) => {
-    console.log("✅ Submitted Data:", data);
     const userInfo = {
       phone: data.phone,
       email: data.email,
@@ -77,7 +76,7 @@ const SignUp = () => {
         navigate('/create-profile')
       }
     } catch (err) {
-      console.log(err);
+       toast.error((err as any).message);;
     }
   };
 

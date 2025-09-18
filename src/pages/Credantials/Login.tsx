@@ -58,7 +58,6 @@ export function Login() {
 
     try {
       const result = await login(loginInfo).unwrap();
-      console.log(result);
       toast.success("Login successfully");
       if (result.success === true) {
         navigate("/");

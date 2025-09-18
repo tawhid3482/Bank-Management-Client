@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { PiEyeClosedLight } from "react-icons/pi";
 import { useEffect, useState } from "react";
@@ -49,20 +50,18 @@ const SetPassword = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    console.log("Password Reset:", data.newPassword);
     try {
       const resetInfo = {
         email: email,
         newPassword: data.newPassword,
       };
       const result = await resetPassword(resetInfo).unwrap();
-      console.log(result);
       if(result.success === true){
         toast.success("Password Reset Successfully")
       }
       navigate('/')
     } catch (err) {
-      console.log(err);
+       toast.error((err as any).message);;
     }
   };
 
