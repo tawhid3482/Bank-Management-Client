@@ -1,6 +1,5 @@
-
-import { motion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import {
   Calendar,
   Building2,
@@ -8,40 +7,41 @@ import {
   Leaf,
   Database,
   HelpCircle,
-} from 'lucide-react'
+} from "lucide-react";
+import { Link } from "react-router";
 
 const industries = [
   {
     icon: <Building2 className="h-6 w-6 text-[#4B203A]" />,
-    title: 'Building & Construction',
+    title: "Building & Construction",
     description:
-      'Specialized financing solutions for construction projects, equipment purchase, and property development with flexible terms tailored to project timelines.',
+      "Specialized financing solutions for construction projects, equipment purchase, and property development with flexible terms tailored to project timelines.",
   },
   {
     icon: <Landmark className="h-6 w-6 text-[#4B203A]" />,
-    title: 'DeFi & Fintech',
+    title: "DeFi & Fintech",
     description:
-      'Cutting-edge decentralized finance solutions combining traditional lending models with blockchain technology for faster, more secure transactions.',
+      "Cutting-edge decentralized finance solutions combining traditional lending models with blockchain technology for faster, more secure transactions.",
   },
   {
     icon: <Leaf className="h-6 w-6 text-[#4B203A]" />,
-    title: 'Agriculture',
+    title: "Agriculture",
     description:
-      'Customized financing for farmers and agribusinesses, considering seasonal cash flows and providing loans for equipment, landscaping, and operational costs.',
+      "Customized financing for farmers and agribusinesses, considering seasonal cash flows and providing loans for equipment, landscaping, and operational costs.",
   },
   {
     icon: <Calendar className="h-6 w-6 text-[#4B203A]" />,
-    title: 'Event & Entertainment',
+    title: "Event & Entertainment",
     description:
-      'Short-term financing solutions for event organizers and entertainment companies, with quick approval processes and specialized risk assessment models.',
+      "Short-term financing solutions for event organizers and entertainment companies, with quick approval processes and specialized risk assessment models.",
   },
   {
     icon: <Database className="h-6 w-6 text-[#4B203A]" />,
-    title: 'Data & Technology',
+    title: "Data & Technology",
     description:
-      'Innovative financing for tech startups and data-driven companies, with IP-backed loan options and growth-focused lending solutions for scaling operations.',
+      "Innovative financing for tech startups and data-driven companies, with IP-backed loan options and growth-focused lending solutions for scaling operations.",
   },
-]
+];
 
 export function IndustrySolutions() {
   return (
@@ -98,15 +98,17 @@ export function IndustrySolutions() {
                 tailored to your specific business needs.
               </p>
             </div>
-            <Button
-              variant="secondary"
-              className="bg-[#C8B491] text-black hover:bg-[#bba272] transition"
-            >
-              Get Started as Client
-            </Button>
+            <Link to={"/sign-up"}>
+              <Button
+                variant="secondary"
+                className="bg-[#C8B491] text-black hover:bg-[#bba272] transition"
+              >
+                Get Started as Client
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </div>
     </section>
-  )
+  );
 }

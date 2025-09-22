@@ -13,6 +13,7 @@ import UserProfile from "@/pages/Profile/UserProfile";
 import { Account } from "@/pages/UserDash/Account";
 import Dashboard from "@/pages/admin/Dashboard";
 import Profile from "@/pages/Profile/Profile";
+import ProtectedRoute from "@/components/layout/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -29,7 +30,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
-        Component: UserProfile,
+        element: (
+          <ProtectedRoute>
+            <UserProfile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "about",
@@ -37,13 +42,21 @@ export const router = createBrowserRouter([
       },
       {
         path: "account",
-        Component: Account,
+        element: (
+          <ProtectedRoute>
+            <Account />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
   {
     path: "/admin",
-    Component: DashboardLayout,
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "dashboard",
