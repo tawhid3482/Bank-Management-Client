@@ -1,50 +1,167 @@
-# React + TypeScript + Vite
+# 🚀 GitHub Actions CI/CD Pipeline (React App)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Project Overview
 
-Currently, two official plugins are available:
+This project demonstrates a simple **CI/CD pipeline** using **GitHub Actions** for a React application. The pipeline automatically runs when code is pushed to the `development` branch and uses a **self-hosted runner** for execution.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ⚙️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+* React + Vite
+* Node.js
+* GitHub Actions
+* Self-hosted Runner (Ubuntu EC2)
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🔄 CI/CD Workflow
+
+### What happens automatically:
+
+1. Developer pushes code to `development` branch
+2. GitHub Actions workflow triggers
+3. Self-hosted runner picks up the job
+4. Dependencies are installed (`npm install`)
+5. React app is built (`npm run build`)
+6. Success or failure is shown in GitHub Actions logs
+
+---
+
+## 📁 Workflow File
+
+Location:
+
+```
+.github/workflows/ci.yml
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Example Workflow:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+```yaml
+name: React CI Pipeline
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-``
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
+```
+
+---
+
+## 🖥️ Self-hosted Runner
+
+A self-hosted runner is a personal server (EC2 Ubuntu instance) that executes GitHub Actions jobs instead of GitHub-hosted servers.
+
+### Benefits:
+
+* Full control over environment
+* Faster execution for custom setups
+* Useful for production-like builds
+
+---
+
+## 🧪 Pipeline Testing
+
+### ✔ Successful Pipeline
+
+* Dependencies installed
+* Build completed without errors
+* Green checkmark in GitHub Actions
+
+### ❌ Failed Pipeline (Intentional)
+
+* Introduced error in build step
+* Workflow fails
+* Red status shown in GitHub Actions logs
+* Used for debugging practice
+
+---
+
+## 🐛 Debugging Process
+
+If pipeline fails:
+
+* Open GitHub Actions tab
+* Click failed workflow
+* Check logs step by step
+* Identify error in build or dependencies
+
+---
+
+## 📸 Required Submission Screenshots
+
+<p align="center">
+  <img src="./screenshot/runner.png" alt="Self-hosted runner" width="800">
+</p>
+
+<p align="center">
+  <img src="./screenshot/success.png" alt="Successful pipeline" width="800">
+</p>
+
+<p align="center">
+  <img src="./screenshot/failed.png" alt="Failed pipeline" width="800">
+</p>
+
+---
+
+
+✅ CI/CD (Continuous Integration / Continuous Deployment)
+
+CI/CD is a software development practice that automates the process of integrating code changes, testing, building, and deploying applications.
+
+Continuous Integration (CI): Developers frequently push code to a shared repository, where it is automatically built and tested to detect errors early.
+Continuous Deployment/Delivery (CD): After successful testing, the application is automatically deployed to a staging or production environment.
+
+👉 Benefits:
+
+* Faster development workflow
+* Early bug detection
+* Reduced manual errors
+* Improved code quality and reliability
+✅ Self-Hosted Runner
+
+A self-hosted runner is a custom machine or server that runs GitHub Actions workflows instead of using GitHub’s default cloud runners.
+
+It can be an EC2 instance, VPS, or a local server configured by the developer.
+
+👉 Features:
+
+* Full control over the execution environment
+* Ability to install custom dependencies and tools
+* Better flexibility and security
+* Useful for private or resource-specific applications
+
+## 📚 Concepts Learned
+
+* CI/CD basics
+* GitHub Actions workflow
+* Jobs and steps structure
+* YAML configuration
+* Self-hosted runners
+* Pipeline debugging
+
+---
+
+## 🎯 Conclusion
+
+This project automates the React build process using GitHub Actions and demonstrates real-world CI/CD practices using a self-hosted runner environment.
