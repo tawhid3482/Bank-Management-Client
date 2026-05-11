@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+  "build-fail": "echo 'Build failed intentionally' && exit 1",
     "lint": "eslint .",
     "preview": "vite preview"
   },
